@@ -41,7 +41,7 @@ function getNewMin(date) {
 
 function createTotalTokenCount() {
   return {
-    minDate: getNewMin(new Date()),
+    minDate: formatDate(getNewMin(new Date())),
     values: Array(30).fill(0),
   };
 }
