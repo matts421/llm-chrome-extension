@@ -1,0 +1,9 @@
+/* popup.css */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 500px; /* your desired width */
+    height: 300px; /* your desired height */
+    background: white;
+}

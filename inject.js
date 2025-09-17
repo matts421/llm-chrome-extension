@@ -1,33 +1,3 @@
-// // Save the original fetch
-// const originalFetch = window.fetch;
-
-// window.fetch = async function (input, init) {
-//   // Check if the URL matches ChatGPT's conversation API
-//   let url = input;
-//   if (input instanceof Request) {
-//     url = input.url;
-//   }
-
-//   if (url === "https://chatgpt.com/backend-api/f/conversation") {
-//     console.log("[Interceptor] Request URL:", url);
-//     if (init?.body) {
-//       try {
-//         const jsonBody = JSON.parse(init.body);
-//         console.log("[Interceptor] Request body:", jsonBody);
-//       } catch {}
-//     }
-//   }
-
-//   const response = await originalFetch(input, init);
-
-//   // Clone the response to read it
-//   if (url === "https://chatgpt.com/backend-api/f/conversation") {
-//     const cloned = response.clone();
-//     cloned.text().then((text) => {
-//       console.log("[Interceptor] Response body:", text);
-//     });
-//   }
-//
 function estimateTokens(text) {
   return Math.ceil(text.trim().length / 4);
 }
@@ -110,7 +80,13 @@ function estimateTokens(text) {
         console.log("[Interceptor] Response:", output);
         totalTokens += estimateTokens(output);
         console.log("tokens:", totalTokens);
-        window.postMessage({ type: "ADD_TOKENS", value: totalTokens }, "*");
+        window.postMessage(
+          {
+            type: "ADD_TOKENS",
+            value: totalTokens,
+          },
+          "*",
+        );
       }
 
       readStream(); // start streaming

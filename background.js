@@ -1,41 +1,65 @@
-// chrome.webRequest.onBeforeRequest.addListener(
-//   (details) => {
-//     if (details.method === "POST") {
-//       try {
-//         const body = details.requestBody?.raw?.[0]?.bytes;
-//         if (body) {
-//           const text = new TextDecoder("utf-8").decode(body);
-//           const data = JSON.parse(text);
+/*
+START HELPER FUNCTIONS
+*/
+function daysBetween(start, end) {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(0, 0, 0, 0);
+  return Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+}
 
-//           console.log("[EXT] Request:", data);
-//           // You can store it or send to popup
-//           chrome.storage.local.set({ lastRequest: data });
-//         }
-//       } catch (e) {
-//         console.error("[EXT] Failed to parse request body", e);
-//       }
-//     }
-//   },
-//   { urls: ["https://chatgpt.com/backend-api/f/conversation"] },
-//   ["requestBody"],
-// );
+function formatDate(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().split("T")[0];
+}
 
-// chrome.webRequest.onCompleted.addListener(
-//   async (details) => {
-//     console.log("[EXT] Response completed:", details);
-//     // You could fetch the response if you want via fetch override or leave as is
-//   },
-//   { urls: ["https://chatgpt.com/backend-api/f/conversation"] },
-// );
-//
+function parseLocalDate(dateStr) {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function updateTokenArray(current, incomingTokens) {
+  const newMin = getNewMin(new Date());
+  const dayDiff = daysBetween(parseLocalDate(current.minDate), newMin);
+
+  let newValues = current.values.slice(dayDiff).concat(Array(dayDiff).fill(0));
+  newValues[newValues.length - 1] += incomingTokens;
+
+  return {
+    minDate: formatDate(newMin),
+    values: newValues,
+  };
+}
+
+function getNewMin(date) {
+  const newMin = new Date(date);
+  newMin.setDate(date.getDate() - 30);
+  return newMin;
+}
+
+function createTotalTokenCount() {
+  return {
+    minDate: getNewMin(new Date()),
+    values: Array(30).fill(0),
+  };
+}
+/*
+END HELPER FUNCTIONS
+*/
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "addTokens") {
-    console.log("got here");
     chrome.storage.local.get(["totalTokenCount"], (result) => {
-      const current = result.totalTokenCount || 0;
-      const updated = current + msg.value;
-      chrome.storage.local.set({ totalTokenCount: updated }, () => {});
+      let current = result.totalTokenCount || createTotalTokenCount();
+
+      chrome.storage.local.set(
+        {
+          totalTokenCount: updateTokenArray(current, msg.value),
+        },
+        () => {},
+      );
     });
   }
 });
