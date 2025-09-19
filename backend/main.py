@@ -45,7 +45,7 @@ async def log_token(entry: TokenEntry):
         sheet.values().append(
             spreadsheetId=SHEET_ID,
             range=RANGE_NAME,
-            valueInputOption="USER_ENTERED",
+            valueInputOption="RAW",
             body={"values": values},
         ).execute()
     except Exception as e:
