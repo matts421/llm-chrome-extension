@@ -17,7 +17,7 @@ data = {
 
 if __name__ == "__main__":
     num_args = len(sys.argv)
-    if num_args >= 1 and sys.argv[1] == "live":
+    if num_args > 1 and sys.argv[1] == "live":
         url = live_url
     else:
         url = local_url
