@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from datetime import datetime
 from uuid import UUID
@@ -25,6 +26,14 @@ sheet = service.spreadsheets()
 
 # --- FastAPI setup ---
 app = FastAPI(title="Token Logger API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"^chrome-extension://.*$",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class TokenEntry(BaseModel):
     uuid: UUID
