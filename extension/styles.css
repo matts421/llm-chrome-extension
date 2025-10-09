@@ -1,0 +1,91 @@
+/* panel base */
+#gpt-stats-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 33%;
+    min-width: 50px;
+    max-width: 90%;
+    background: rgba(0, 0, 0, 1); /* white, 85% opaque */
+    border-left: 2px solid #ddd;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    transition: width 160ms ease;
+    overflow: hidden;
+}
+
+/* header */
+#gpt-stats-header {
+    padding: 6px 10px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+}
+
+/* iframe body */
+#gpt-stats-frame {
+    flex: 1;
+    border: none;
+    width: 100%;
+    background: rgba(0, 0, 0, 1); /* white, 85% opaque */
+}
+
+/* the thin edge the user clicks — only this element starts a resize */
+#gpt-resizer {
+    width: 10px; /* clickable area */
+    cursor: col-resize;
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000001; /* above the iframe so it always receives pointerdown */
+    touch-action: none; /* prevent touch scrolling while dragging */
+}
+
+/* visible feedback when active (optional) */
+#gpt-resizer.active {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* collapsed tab (shows when panel is collapsed) */
+#gpt-collapsed-tab {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: -34px;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    cursor: pointer;
+    z-index: 1000002;
+}
+
+/* collapsed state */
+#gpt-stats-panel.collapsed {
+    width: 0 !important;
+    min-width: 0;
+    border-left: none;
+    overflow: visible; /* let the collapsed tab be visible */
+}
+#gpt-stats-panel.collapsed #gpt-collapsed-tab {
+    display: block;
+}
+
+/* disable text-selection while actively resizing */
+html.resizing,
+html.resizing * {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}

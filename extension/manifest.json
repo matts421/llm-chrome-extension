@@ -13,15 +13,16 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://chatgpt.com/*"],
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
       "js": ["content.js"],
-      "run_at": "document_start"
+      "run_at": "document_start",
+      "css": ["styles.css"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["inject.js"],
-      "matches": ["https://chatgpt.com/*"]
+      "resources": ["inject.js", "panel.html"],
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"]
     }
   ]
 }
