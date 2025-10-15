@@ -66,7 +66,7 @@ function createTokenChart(ctx, labels, values) {
     label: "Goal",
     data: Array(values.length).fill(GOAL),
     borderColor: "rgba(0, 0, 0, 1)",
-    borderWidth: 2,
+    borderWidth: 1,
     borderDash: [5, 5],
     fill: false,
     type: "line",
