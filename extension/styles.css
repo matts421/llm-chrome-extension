@@ -3,9 +3,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: stretch;
-    /*padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 5px;*/
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     background-color: #f2f2f2;
@@ -123,6 +120,7 @@
 
 #tokenBox {
     border-radius: 12px;
+    background-color: #f2f2f2;
 }
 
 #tokenChart {
