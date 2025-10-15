@@ -2,6 +2,8 @@ function estimateTokens(text) {
   return Math.ceil(text.trim().length / 4);
 }
 
+const APPEND_KEY = "/message/content/parts/0";
+
 // inject.js
 (function () {
   const targetUrl = "https://chatgpt.com/backend-api/f/conversation";
@@ -64,9 +66,13 @@ function estimateTokens(text) {
               const res = JSON.parse(jsonStr);
               const vBody = res.v;
 
+              console.log(vBody);
+
               if (vBody !== undefined) {
                 if (Array.isArray(vBody)) {
-                  output += vBody[0]?.v ?? "";
+                  vBody
+                    .filter((obj) => obj.p === APPEND_KEY)
+                    .forEach((obj) => (output += obj.v ?? ""));
                 } else if (typeof vBody === "string") {
                   output += vBody;
                 }

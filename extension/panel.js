@@ -49,85 +49,75 @@ function createTotalTokenCount() {
 END HELPER FUNCTIONS
 */
 
-const GOAL = 1000; // TODO: edit this value
+let GOAL = 1000;
+let tokenChart = null;
 
 function createTokenChart(ctx, labels, values) {
+  const dataBar = {
+    label: "Tokens",
+    data: values,
+    backgroundColor: "#939090",
+    borderWidth: 1,
+    borderRadius: 0,
+  };
+
   const goalLine = {
     label: "Goal",
     data: Array(values.length).fill(GOAL),
-    borderColor: "rgba(255, 99, 132, 1)",
+    borderColor: "rgba(0, 0, 0, 1)",
     borderWidth: 2,
     borderDash: [5, 5],
     fill: false,
+    type: "line", // keep the goal as a line overlay
     pointRadius: 0,
     pointHoverRadius: 5,
-    pointHitRadius: 50,
-    pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
-  };
-  const averageLine = {
-    label: "Average",
-    data: Array(values.length).fill(
-      values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0,
-    ),
-    borderColor: "rgba(75, 192, 192, 1)",
-    borderWidth: 2,
-    borderDash: [5, 3],
-    fill: false,
-    pointRadius: 0,
-    pointHoverRadius: 5,
-    pointHitRadius: 50,
-    pointHoverBackgroundColor: "rgba(75, 192, 192, 1)",
-  };
-  const dataLine = {
-    label: "Tokens per Day",
-    data: values,
-    backgroundColor: "rgba(66, 133, 244, 0.2)",
-    borderColor: "rgba(66, 133, 244, 1)",
-    borderWidth: 2,
-    fill: true,
-    tension: 0.2,
+    pointHitRadius: 10,
+    order: 2,
   };
 
   tokenChart = new Chart(ctx, {
-    type: "line",
+    type: "bar", // primary chart type
     data: {
-      labels: labels,
-      datasets: [dataLine, averageLine, goalLine],
+      labels,
+      datasets: [dataBar, goalLine],
     },
     options: {
       responsive: true,
       scales: {
         x: {
-          title: {
+          title: { display: false },
+          grid: { display: false },
+          ticks: {
+            font: { size: 6 },
+            autoSkip: false,
             display: true,
-            text: "Date",
+            callback: function (value, index) {
+              return index % 7 === 0
+                ? this.getLabelForValue(value).split("-")[2]
+                : "";
+            },
           },
         },
         y: {
           beginAtZero: true,
-          title: {
-            display: true,
-            text: "Tokens",
-          },
+          title: { display: false, text: "Tokens" },
         },
+      },
+      plugins: {
+        legend: { display: false },
       },
     },
   });
 }
 
-let tokenChart = null;
-
 function updateDisplay(value) {
-  if (value === undefined) {
-    value = createTotalTokenCount();
-  }
+  if (!value) value = createTotalTokenCount();
   const newValue = updateTokenArray(value, 0);
 
   const ctx = document.getElementById("tokenChart").getContext("2d");
-
   const startDate = parseLocalDate(newValue.minDate);
   const labels = Array.from({ length: newValue.values.length }, (_, i) => {
-    let d = new Date(startDate);
+    const d = new Date(startDate);
     d.setDate(startDate.getDate() + i);
     return formatDate(d);
   });
@@ -136,23 +126,45 @@ function updateDisplay(value) {
   if (tokenChart) {
     tokenChart.data.labels = labels;
     tokenChart.data.datasets[0].data = values;
-    tokenChart.update({
-      duration: 800,
-      easing: "easeOutQuart",
-    });
+    tokenChart.update({ duration: 800, easing: "easeOutQuart" });
   } else {
     createTokenChart(ctx, labels, values);
   }
 }
 
-// Initial read when popup opens
-chrome.storage.local.get(["totalTokenCount"], (result) => {
-  updateDisplay(result.totalTokenCount);
-});
+// Set goal
 
-// Listen for changes in storage while popup is open
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.totalTokenCount) {
-    updateDisplay(changes.totalTokenCount.newValue);
+const goalInput = document.getElementById("goal-input");
+
+function setGoal() {
+  const newGoal = parseFloat(goalInput.value);
+  if (isNaN(newGoal) || newGoal <= 0) {
+    alert("Please enter a valid goal!");
+    return;
+  }
+  GOAL = newGoal;
+  tokenChart.data.datasets[1].data = Array(30).fill(newGoal);
+  tokenChart.update({ duration: 800, easing: "easeOutQuart" });
+}
+
+// Press Enter inside input
+goalInput.addEventListener("keydown", (event) => {
+  console.log(event);
+  if (event.key === "Enter") {
+    setGoal();
   }
 });
+
+/* ---------------- MESSAGE BRIDGE ---------------- */
+
+// Listen for messages from content.js
+window.addEventListener("message", (event) => {
+  if (event.source !== window) return;
+
+  if (event.data.type === "TOKEN_DATA") {
+    updateDisplay(event.data.value);
+  }
+});
+
+// Request data when the panel loads
+window.postMessage({ type: "REQUEST_TOKEN_DATA" });

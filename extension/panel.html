@@ -1,31 +1,72 @@
-<!--<!doctype html>
-<html>
-    <head>
-        <style>
-            body {
-                font-family: sans-serif;
-                margin: 0;
-                padding: 10px;
-            }
-        </style>
-    </head>
-    <body>
-        <h2>Your GPT Stats</h2>
-        <p>Coming soon...</p>
-    </body>
-</html>-->
 <!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <title>Panel</title>
         <script src="lib/chart.umd.min.js"></script>
-        <!--<link rel="stylesheet" href="popup.css" />-->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
-        <p>Total token count:</p>
-        <div id="output"></div>
-        <canvas id="tokenChart"></canvas>
+        <h2 id="title">Your GPT Stats</h2>
+        <input type="number" id="goal-input" placeholder="Enter a token goal" />
+        <div id="tokenBox">
+            <div id="date-buttons">
+                <button>D</button>
+                <button id="week-button">W</button>
+                <button>M</button>
+            </div>
+            <canvas id="tokenChart"></canvas>
+        </div>
+        <div id="badges">
+            <div id="water-usage">
+                <span>
+                    <h2>12.7 L</h2>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-droplet"
+                    >
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                </span>
+                <p>That's like drinking N bottles of water.</p>
+            </div>
+            <div id="electricity-usage">
+                <span>
+                    <h2>2.5 kWh</h2>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-zap"
+                    >
+                        <polygon
+                            points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                        ></polygon>
+                    </svg>
+                </span>
+                <p>That's like charging your phone X times.</p>
+            </div>
+        </div>
+        <div id="gallery-container">
+            <div id="gallery-image-container"></div>
+            <button id="prev-btn" class="nav-btn">&#10094;</button>
+            <button id="next-btn" class="nav-btn">&#10095;</button>
+        </div>
+        <script src="panel.js"></script>
     </body>
-    <script src="panel.js"></script>
 </html>

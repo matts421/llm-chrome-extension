@@ -2,14 +2,10 @@
   "manifest_version": 3,
   "name": "ChatGPT Token Counter",
   "version": "1.0",
-  "permissions": ["storage", "scripting"],
+  "permissions": ["storage", "scripting", "fontSettings"],
   "host_permissions": ["https://chatgpt.com/*"],
   "background": {
     "service_worker": "background.js"
-  },
-  "action": {
-    "default_popup": "popup.html",
-    "default_title": "Token Usage"
   },
   "content_scripts": [
     {
@@ -21,7 +17,14 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["inject.js", "panel.html"],
+      "resources": [
+        "inject.js",
+        "panel.html",
+        "panel.js",
+        "lib/chart.umd.min.js",
+        "img/*.svg",
+        "fonts/*.ttf"
+      ],
       "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"]
     }
   ]

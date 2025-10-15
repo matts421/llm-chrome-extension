@@ -1,91 +1,201 @@
-/* panel base */
-#gpt-stats-panel {
+* {
+    font-family:
+        "Inter",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+    font-weight: 100;
+}
+p {
+    font-size: small;
+}
+#date-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-color: #f2f2f2;
+
+    button {
+        flex: 1;
+        color: rgba(115, 115, 115, 1);
+        font-size: small;
+        background-color: #f2f2f2;
+        padding-top: 5px;
+    }
+    #week-button {
+        border-left: 1px solid rgba(217, 217, 217, 1);
+        border-right: 1px solid rgba(217, 217, 217, 1);
+    }
+}
+
+#my-extension-panel {
     position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 33%;
-    min-width: 50px;
-    max-width: 90%;
-    background: rgba(0, 0, 0, 1); /* white, 85% opaque */
-    border-left: 2px solid #ddd;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
-    z-index: 999999;
     display: flex;
     flex-direction: column;
-    transition: width 160ms ease;
-    overflow: hidden;
-}
-
-/* header */
-#gpt-stats-header {
-    padding: 6px 10px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #ddd;
-    font-weight: 600;
-}
-
-/* iframe body */
-#gpt-stats-frame {
-    flex: 1;
-    border: none;
-    width: 100%;
-    background: rgba(0, 0, 0, 1); /* white, 85% opaque */
-}
-
-/* the thin edge the user clicks — only this element starts a resize */
-#gpt-resizer {
-    width: 10px; /* clickable area */
-    cursor: col-resize;
-    background: transparent;
-    position: absolute;
+    gap: 16px;
     top: 0;
-    left: 0;
+    right: 0;
+    width: 33%;
     height: 100%;
-    z-index: 1000001; /* above the iframe so it always receives pointerdown */
-    touch-action: none; /* prevent touch scrolling while dragging */
+    background: rgba(0, 0, 0, 0);
+    color: white;
+    padding: 16px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border-left: 1px solid rgba(127, 127, 127, 0.1);
+    z-index: 999999;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
-/* visible feedback when active (optional) */
-#gpt-resizer.active {
-    background: rgba(0, 0, 0, 0.03);
+#badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-/* collapsed tab (shows when panel is collapsed) */
-#gpt-collapsed-tab {
-    display: none;
+#badges > div {
+    flex: 1 1 150px;
+    box-sizing: border-box;
+}
+
+#water-usage {
+    margin: 0;
+    border-radius: 12px;
+    padding: 10px;
+    background-color: #a5cfe3;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    color: #1e2b68;
+
+    svg {
+        fill: #1e2b68;
+    }
+
+    span {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    p {
+        color: black;
+    }
+}
+
+#electricity-usage {
+    margin: 0;
+    border-radius: 12px;
+    padding: 10px;
+    background-color: #ffddb0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    color: #e1670a;
+
+    svg {
+        fill: #e1670a;
+    }
+
+    span {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    p {
+        color: black;
+    }
+}
+
+#tokenBox {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+}
+
+#tokenChart {
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    backdrop-filter: blur(6px);
+    transition: background-color 0.3s ease;
+    background-color: #f2f2f2;
+}
+@media (prefers-color-scheme: light) {
+    p,
+    #title {
+        color: rgba(0, 0, 0, 1);
+    }
+}
+@media (prefers-color-scheme: dark) {
+}
+
+#gallery-container {
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    background-color: #f2f2f2;
+}
+
+.gallery-image {
+    border-radius: 12px;
+    background-color: #f2f2f2;
+}
+
+.nav-btn {
     position: absolute;
     top: 50%;
-    left: -34px;
     transform: translateY(-50%);
-    width: 30px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    border-right: none;
-    border-radius: 6px 0 0 6px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
     cursor: pointer;
-    z-index: 1000002;
+    opacity: 0;
+    transition:
+        opacity 0.2s ease,
+        background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
 }
 
-/* collapsed state */
-#gpt-stats-panel.collapsed {
-    width: 0 !important;
-    min-width: 0;
-    border-left: none;
-    overflow: visible; /* let the collapsed tab be visible */
-}
-#gpt-stats-panel.collapsed #gpt-collapsed-tab {
-    display: block;
+#prev-btn {
+    left: 16px;
 }
 
-/* disable text-selection while actively resizing */
-html.resizing,
-html.resizing * {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
+#next-btn {
+    right: 16px;
+}
+
+#gallery-container:hover .nav-btn {
+    opacity: 1;
+}
+
+.nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#goal-input {
+    border: 1px solid rgba(127, 127, 127, 0.5);
+    border-radius: 8px;
+    color: black;
+}
+
+#goal-input:focus {
+    border-color: rgba(127, 127, 127, 0.7);
 }
