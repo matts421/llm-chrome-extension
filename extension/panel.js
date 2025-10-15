@@ -59,6 +59,7 @@ function createTokenChart(ctx, labels, values) {
     backgroundColor: "#939090",
     borderWidth: 1,
     borderRadius: 0,
+    order: 0,
   };
 
   const goalLine = {
@@ -68,11 +69,11 @@ function createTokenChart(ctx, labels, values) {
     borderWidth: 2,
     borderDash: [5, 5],
     fill: false,
-    type: "line", // keep the goal as a line overlay
+    type: "line",
     pointRadius: 0,
     pointHoverRadius: 5,
     pointHitRadius: 10,
-    order: 2,
+    order: 1,
   };
 
   tokenChart = new Chart(ctx, {
@@ -88,7 +89,9 @@ function createTokenChart(ctx, labels, values) {
           title: { display: false },
           grid: { display: false },
           ticks: {
-            font: { size: 6 },
+            font: { size: 8 },
+            maxRotation: 0,
+            minRotation: 0,
             autoSkip: false,
             display: true,
             callback: function (value, index) {
