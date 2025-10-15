@@ -8,3 +8,9 @@
 6. Open dev console in Chrome to view debugging info
 
 <img width="1614" height="1049" alt="sample" src="https://github.com/user-attachments/assets/f4c90360-0b2f-4fc4-86ca-ada9fbdff895" />
+
+# To Update
+
+1. Go to `chrome://extensions/`
+2. In the top-left, click "Update"
+3. Make sure you refresh any existing ChatGPT tabs to see the new changes
