@@ -70,6 +70,7 @@ async function injectPanel() {
 
   chartScript.onload = () => {
     const panelScript = document.createElement("script");
+    panelScript.type = "module";
     panelScript.src = chrome.runtime.getURL("panel.js");
     panel.appendChild(panelScript);
   };

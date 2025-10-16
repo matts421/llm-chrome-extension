@@ -1,6 +1,4 @@
-function estimateTokens(text) {
-  return Math.ceil(text.trim().length / 4);
-}
+import { estimateTokens } from "./lib/utils.js";
 
 const APPEND_KEY = "/message/content/parts/0";
 
