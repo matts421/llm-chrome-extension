@@ -5,7 +5,8 @@
   "permissions": ["storage", "scripting", "fontSettings"],
   "host_permissions": ["https://chatgpt.com/*"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -22,6 +23,7 @@
         "panel.html",
         "panel.js",
         "lib/chart.umd.min.js",
+        "lib/*.js",
         "img/*.svg",
         "fonts/*.ttf"
       ],

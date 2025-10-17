@@ -1,5 +1,4 @@
 // content.js
-
 const script = document.createElement("script");
 script.src = chrome.runtime.getURL("inject.js");
 script.type = "module";
@@ -20,6 +19,8 @@ window.addEventListener("message", (event) => {
 
   // From inject.js → backend
   if (event.data.type === "ADD_TOKENS") {
+    console.log("[Content] adding tokens");
+
     chrome.runtime.sendMessage({
       action: "addTokens",
       value: event.data.value,
@@ -70,6 +71,7 @@ async function injectPanel() {
 
   chartScript.onload = () => {
     const panelScript = document.createElement("script");
+    panelScript.type = "module";
     panelScript.src = chrome.runtime.getURL("panel.js");
     panel.appendChild(panelScript);
   };
