@@ -64,8 +64,6 @@ const APPEND_KEY = "/message/content/parts/0";
               const res = JSON.parse(jsonStr);
               const vBody = res.v;
 
-              console.log(vBody);
-
               if (vBody !== undefined) {
                 if (Array.isArray(vBody)) {
                   vBody

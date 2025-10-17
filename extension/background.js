@@ -1,4 +1,4 @@
-import { updateTokenArray, createTotalTokenCount } from "./lib/utils.js";
+import { updateTokens, initTokens } from "./lib/utils.js";
 
 function getOrCreateUserId(callback) {
   chrome.storage.local.get(["userId"], (result) => {
@@ -15,7 +15,7 @@ function getOrCreateUserId(callback) {
   });
 }
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg, _sender, _sendResponse) => {
   if (msg.action === "addTokens") {
     getOrCreateUserId((userId) => {
       const now = new Date();
@@ -29,8 +29,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         timestamp: timestamp,
         token_count: msg.value,
       };
-
-      console.log("trying to send data: ", JSON.stringify(data));
 
       fetch("https://llm-chrome-extension.onrender.com/log", {
         method: "POST",
@@ -51,11 +49,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
 
     chrome.storage.local.get(["totalTokenCount"], (result) => {
-      let current = result.totalTokenCount || createTotalTokenCount();
+      let current = result.totalTokenCount || initTokens();
 
       chrome.storage.local.set(
         {
-          totalTokenCount: updateTokenArray(current, msg.value),
+          totalTokenCount: updateTokens(current, msg.value),
         },
         () => {},
       );
