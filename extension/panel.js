@@ -138,6 +138,8 @@ function updateTokenText(title, count) {
   if (title == null && count == null) {
     title = titleText.textContent;
     count = Number(countText.textContent.split(" ")[0].replace(/[^\d.-]/g, ""));
+  } else {
+    updateMetrics(count);
   }
 
   titleText.textContent = title;
@@ -153,8 +155,28 @@ function updateTokenText(title, count) {
   }
 }
 
-function computeAverage(values) {
+function computeSum(values) {
   return values.reduce((acc, value) => acc + value, 0);
+}
+
+function updateMetrics(count) {
+  const waterL = (0.32 * (count / 500) * 800_000_000) / (7 * 1000);
+  const eleckWh = (0.34 * 1000 * (count / 500) * 800_000_000) / 7;
+
+  const bottles = waterL * 2;
+  const homes = eleckWh / 11_135;
+
+  let waterHeader = document.getElementById("water-count");
+  let waterText = document.getElementById("water-text");
+  waterHeader.textContent = `${Math.round(waterL).toLocaleString()} L`;
+  waterText.textContent = `If every user used this amount, that equates to using ${Math.round(bottles).toLocaleString()}
+  bottles of fresh water every single day`;
+
+  let elecHeader = document.getElementById("electricity-count");
+  let elecText = document.getElementById("electricity-text");
+  elecHeader.textContent = `${Math.round(eleckWh).toLocaleString()} kWh`;
+  elecText.textContent = `If every user used this amount, that equates to enough
+  energy to power ${Math.round(homes).toLocaleString()} homes for an entire year.`;
 }
 
 function updateDisplay() {
@@ -167,19 +189,19 @@ function updateDisplay() {
       [labels, values] = createDayData(tokens);
       dateSkip = 4;
       num_vals = 24;
-      updateTokenText("Total", computeAverage(values));
+      updateTokenText("Total", computeSum(values));
       break;
     case TIME_RANGE.WEEK:
       [labels, values] = createWeekData(tokens);
       dateSkip = 1;
       num_vals = 7;
-      updateTokenText("Average", computeAverage(values));
+      updateTokenText("Average", (computeSum(values) / 7).toFixed(2));
       break;
     case TIME_RANGE.MONTH:
       [labels, values] = createMonthData(tokens);
       dateSkip = 7;
       num_vals = 30;
-      updateTokenText("Average", computeAverage(values));
+      updateTokenText("Average", (computeSum(values) / 30).toFixed(2));
       break;
   }
 

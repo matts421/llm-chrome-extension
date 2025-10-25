@@ -37,7 +37,7 @@
         <div id="badges">
             <div id="water-usage">
                 <span>
-                    <h2>12.7 L</h2>
+                    <h2 id="water-count">0 L</h2>
                     <svg
                         width="24"
                         height="24"
@@ -58,11 +58,14 @@
                         />
                     </svg>
                 </span>
-                <p>That's like drinking N bottles of water.</p>
+                <p id="water-text">
+                    If every user used this amount, that equates to using 0
+                    bottles of fresh water every single day.
+                </p>
             </div>
             <div id="electricity-usage">
                 <span>
-                    <h2>2.5 kWh</h2>
+                    <h2 id="electricity-count">0 kWh</h2>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -79,7 +82,10 @@
                         ></polygon>
                     </svg>
                 </span>
-                <p>That's like charging your phone X times.</p>
+                <p id="electricity-text">
+                    If every user used this amount, that equates to enough
+                    energy to power 0 homes for an entire year.
+                </p>
             </div>
         </div>
         <div id="gallery-container">
