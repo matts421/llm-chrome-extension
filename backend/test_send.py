@@ -11,7 +11,7 @@ live_url = "https://llm-chrome-extension.onrender.com/log"
 data = {
     "uuid": str(uuid4()),
     "timestamp": datetime.now().strftime("%Y%m%d:%H%M%S"),
-    "token_count": 12345
+    "token_count": 12345,
 }
 
 

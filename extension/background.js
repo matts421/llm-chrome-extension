@@ -74,22 +74,22 @@ chrome.runtime.onMessage.addListener((msg, _sender, _sendResponse) => {
         goal: msg.value,
       };
 
-      // fetch("https://llm-chrome-extension.onrender.com/goal", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data),
-      // })
-      //   .then((response) => {
-      //     if (!response.ok)
-      //       throw new Error("Network response was not ok: " + response.status);
-      //     return response.json();
-      //   })
-      //   .then((json) => {
-      //     console.log("Successfully sent goal data:", json);
-      //   })
-      //   .catch((err) => {
-      //     console.error("Error sending goal data:", err);
-      //   });
+      fetch("https://llm-chrome-extension.onrender.com/goal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (!response.ok)
+            throw new Error("Network response was not ok: " + response.status);
+          return response.json();
+        })
+        .then((json) => {
+          console.log("Successfully sent goal data:", json);
+        })
+        .catch((err) => {
+          console.error("Error sending goal data:", err);
+        });
     });
 
     chrome.storage.local.set({ tokenGoal: msg.value }, () => {});
