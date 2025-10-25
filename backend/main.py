@@ -35,20 +35,49 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class TokenEntry(BaseModel):
     uuid: UUID
     timestamp: str = Field(..., pattern=r"^\d{8}:\d{6}$")  # YYYYmmDD:HHmmss
     token_count: int
 
+
+class GoalEntry(BaseModel):
+    uuid: UUID
+    timestamp: str = Field(..., pattern=r"^\d{8}:\d{6}$")  # YYYYmmDD:HHmmss
+    goal: int
+
+
 @app.post("/log")
 async def log_token(entry: TokenEntry):
-    # Validate timestamp
     try:
-        dt = datetime.strptime(entry.timestamp, "%Y%m%d:%H%M%S")
+        _ = datetime.strptime(entry.timestamp, "%Y%m%d:%H%M%S")
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid timestamp format")
 
-    values = [[str(entry.uuid), entry.timestamp, entry.token_count]]
+    values = [["COUNT", str(entry.uuid), entry.timestamp, entry.token_count]]
+
+    try:
+        sheet.values().append(
+            spreadsheetId=SHEET_ID,
+            range=RANGE_NAME,
+            valueInputOption="RAW",
+            body={"values": values},
+        ).execute()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error writing to sheet: {e}")
+
+    return {"status": "success", "data": values}
+
+
+@app.post("/goal")
+async def update_goal(entry: GoalEntry):
+    try:
+        _ = datetime.strptime(entry.timestamp, "%Y%m%d:%H%M%S")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid timestamp format")
+
+    values = [["GOAL", str(entry.uuid), entry.timestamp, entry.goal]]
 
     try:
         sheet.values().append(

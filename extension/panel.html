@@ -11,7 +11,21 @@
     </head>
     <body>
         <h2 id="title">Your GPT Stats</h2>
-        <input type="number" id="goal-input" placeholder="Enter a token goal" />
+        <div id="summary-stats">
+            <div id="summary-token-count">
+                <p id="summary-text-title"></p>
+                <p id="summary-text-count"></p>
+                <p id="summary-text-diff" style="font-size: small"></p>
+            </div>
+            <div id="token-goal-input">
+                <input
+                    type="number"
+                    id="goal-input"
+                    placeholder="Set daily token goal"
+                />
+                <button id="token-enter-button">Enter</button>
+            </div>
+        </div>
         <div id="tokenBox">
             <div id="date-buttons">
                 <button id="day-button">D</button>

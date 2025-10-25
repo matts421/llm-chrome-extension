@@ -17,6 +17,22 @@ window.addEventListener("message", (event) => {
     });
   }
 
+  if (event.data.type === "REQUEST_GOAL_DATA") {
+    chrome.storage.local.get(["tokenGoal"], (result) => {
+      window.postMessage({
+        type: "GOAL_DATA",
+        value: result.tokenGoal ?? 0,
+      });
+    });
+  }
+
+  if (event.data.type === "UPDATE_TOKEN_GOAL") {
+    chrome.runtime.sendMessage({
+      action: "updateGoal",
+      value: event.data.value,
+    });
+  }
+
   // From inject.js → backend
   if (event.data.type === "ADD_TOKENS") {
     console.log("[Content] adding tokens");

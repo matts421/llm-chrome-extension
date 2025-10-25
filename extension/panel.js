@@ -17,7 +17,7 @@ function createTokenChart(ctx, labels, values) {
 
   const goalLine = {
     label: "Goal",
-    data: Array(values.length).fill(GOAL),
+    data: [],
     borderColor: "rgba(0, 0, 0, 1)",
     borderWidth: 1,
     borderDash: [5, 5],
@@ -131,6 +131,32 @@ function createWeekData(value) {
   return [labels, values];
 }
 
+function updateTokenText(title, count) {
+  let countText = document.getElementById("summary-text-count");
+  let titleText = document.getElementById("summary-text-title");
+
+  if (title == null && count == null) {
+    title = titleText.textContent;
+    count = Number(countText.textContent.split(" ")[0].replace(/[^\d.-]/g, ""));
+  }
+
+  titleText.textContent = title;
+  countText.textContent = `${count.toLocaleString()} tokens`;
+  const diff = count - GOAL;
+
+  let diffElement = document.getElementById("summary-text-diff");
+  if (currentState == TIME_RANGE.DAY) {
+    diffElement.textContent = `${diff <= 0 ? "▼" : "▲"} ${Math.abs(diff).toLocaleString()}`;
+    diffElement.style.color = diff <= 0 ? "rgb(62, 164, 75)" : "#FF0000";
+  } else {
+    diffElement.textContent = "";
+  }
+}
+
+function computeAverage(values) {
+  return values.reduce((acc, value) => acc + value, 0);
+}
+
 function updateDisplay() {
   const ctx = document.getElementById("tokenChart").getContext("2d");
   let labels = [];
@@ -141,23 +167,30 @@ function updateDisplay() {
       [labels, values] = createDayData(tokens);
       dateSkip = 4;
       num_vals = 24;
+      updateTokenText("Total", computeAverage(values));
       break;
     case TIME_RANGE.WEEK:
       [labels, values] = createWeekData(tokens);
       dateSkip = 1;
       num_vals = 7;
+      updateTokenText("Average", computeAverage(values));
       break;
     case TIME_RANGE.MONTH:
       [labels, values] = createMonthData(tokens);
       dateSkip = 7;
       num_vals = 30;
+      updateTokenText("Average", computeAverage(values));
       break;
   }
 
   if (tokenChart) {
     tokenChart.data.labels = labels;
     tokenChart.data.datasets[0].data = values;
-    tokenChart.data.datasets[1].data = Array(num_vals).fill(GOAL);
+    if (currentState == TIME_RANGE.DAY) {
+      tokenChart.data.datasets[1].data = [];
+    } else {
+      tokenChart.data.datasets[1].data = Array(num_vals).fill(GOAL);
+    }
     tokenChart.update({ duration: 800, easing: "easeOutQuart" });
   } else {
     createTokenChart(ctx, labels, values);
@@ -198,6 +231,7 @@ monthButton.addEventListener("click", () => {
 // Set goal
 
 const goalInput = document.getElementById("goal-input");
+const goalButton = document.getElementById("token-enter-button");
 
 function setGoal() {
   const newGoal = parseFloat(goalInput.value);
@@ -206,15 +240,18 @@ function setGoal() {
     return;
   }
   GOAL = newGoal;
-  tokenChart.data.datasets[1].data = Array(num_vals).fill(newGoal);
-  tokenChart.update({ duration: 800, easing: "easeOutQuart" });
-}
+  window.postMessage({ type: "UPDATE_TOKEN_GOAL", value: GOAL });
 
-// Press Enter inside input
-goalInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    setGoal();
+  if (currentState == TIME_RANGE.DAY) {
+    tokenChart.data.datasets[1].data = [];
+  } else {
+    tokenChart.data.datasets[1].data = Array(num_vals).fill(GOAL);
   }
+  tokenChart.update({ duration: 800, easing: "easeOutQuart" });
+  updateTokenText(null, null);
+}
+goalButton.addEventListener("click", (_) => {
+  setGoal();
 });
 
 /* ---------------- MESSAGE BRIDGE ---------------- */
@@ -227,7 +264,13 @@ window.addEventListener("message", (event) => {
     tokens = event.data.value;
     updateDisplay();
   }
+
+  if (event.data.type === "GOAL_DATA") {
+    GOAL = event.data.value;
+    updateDisplay();
+  }
 });
 
 // Request data when the panel loads
 window.postMessage({ type: "REQUEST_TOKEN_DATA" });
+window.postMessage({ type: "REQUEST_GOAL_DATA" });
