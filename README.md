@@ -7,9 +7,7 @@
 5. Ensure the extension is enabled, pin it for easier use, and navigate to `chatgpt.com` and chat to view the token count rise.
 6. Open dev console in Chrome to view debugging info
 
-<img width="1614" height="1049" alt="sample" src="https://github.com/user-attachments/assets/f4c90360-0b2f-4fc4-86ca-ada9fbdff895" />
-<img width="487" height="838" alt="Screenshot 2025-10-25 at 2 11 13 PM" src="https://github.com/user-attachments/assets/38d86b1c-b21f-4c04-989e-4d8049866ce7" />
-<img width="487" height="838" alt="Screenshot 2025-10-25 at 2 11 22 PM" src="https://github.com/user-attachments/assets/711e9a56-cc53-43b3-bab4-124e8f0f4305" />
+<img width="1614" height="1049" alt="Screenshot 2025-10-25 at 10 20 01 PM" src="https://github.com/user-attachments/assets/e768559a-df97-4660-9b1c-e3d68b5d07dd" />
 
 
 # To Update
