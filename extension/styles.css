@@ -49,7 +49,7 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 20px;
     top: 0;
     right: 0;
     width: 33%;
@@ -188,22 +188,13 @@
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-#summary-stats {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center; /* vertically center items */
-    gap: 20px;
-}
-
 #summary-token-count {
     flex: 0 0 auto; /* shrink to fit content, no stretching */
 }
 
 #token-goal-input {
     display: flex;
-    flex-wrap: wrap;
     gap: 5px;
-    flex: 1 1 250px; /* take up remaining horizontal space */
     min-width: 0;
 }
 
@@ -226,8 +217,17 @@
     padding: 10px;
     flex-shrink: 0;
     cursor: pointer;
+    color: black;
 }
 
 #token-enter-button:hover {
     background-color: #f2f2f2;
+}
+
+#electricity-text,
+#water-text,
+#summary-text-count {
+    b {
+        font-weight: bold !important;
+    }
 }

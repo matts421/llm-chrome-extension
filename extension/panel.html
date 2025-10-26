@@ -11,20 +11,10 @@
     </head>
     <body>
         <h2 id="title">Your GPT Stats</h2>
-        <div id="summary-stats">
-            <div id="summary-token-count">
-                <p id="summary-text-title"></p>
-                <p id="summary-text-count"></p>
-                <p id="summary-text-diff" style="font-size: small"></p>
-            </div>
-            <div id="token-goal-input">
-                <input
-                    type="number"
-                    id="goal-input"
-                    placeholder="Set daily token goal"
-                />
-                <button id="token-enter-button">Enter</button>
-            </div>
+        <div id="summary-token-count">
+            <p id="summary-text-title"></p>
+            <p id="summary-text-count"></p>
+            <p id="summary-text-diff" style="font-size: small"></p>
         </div>
         <div id="tokenBox">
             <div id="date-buttons">
@@ -33,6 +23,14 @@
                 <button id="month-button">M</button>
             </div>
             <canvas id="tokenChart"></canvas>
+        </div>
+        <div id="token-goal-input">
+            <input
+                type="number"
+                id="goal-input"
+                placeholder="Set daily token goal"
+            />
+            <button id="token-enter-button">Enter</button>
         </div>
         <div id="badges">
             <div id="water-usage">
@@ -58,7 +56,7 @@
                         />
                     </svg>
                 </span>
-                <p id="water-text">
+                <p id="water-text" style="font-size: smaller">
                     If every user used this amount, that equates to using 0
                     bottles of fresh water every single day.
                 </p>
@@ -82,7 +80,7 @@
                         ></polygon>
                     </svg>
                 </span>
-                <p id="electricity-text">
+                <p id="electricity-text" style="font-size: smaller">
                     If every user used this amount, that equates to enough
                     energy to power 0 homes for an entire year.
                 </p>
