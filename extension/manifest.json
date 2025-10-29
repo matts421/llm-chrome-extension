@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ChatGPT Token Counter",
   "version": "1.0",
-  "permissions": ["storage", "scripting", "fontSettings"],
+  "permissions": ["storage", "fontSettings"],
   "host_permissions": ["https://chatgpt.com/*"],
   "background": {
     "service_worker": "background.js",
