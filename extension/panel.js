@@ -136,7 +136,7 @@ function updateTokenText(title, count) {
   let titleText = document.getElementById("summary-text-title");
   let goalCountText = document.getElementById("summary-text-goal-count");
 
-  goalCountText.innerHTML = `<b>${GOAL.toLocaleString()}</b> tokens`;
+  goalCountText.innerHTML = `<b>${GOAL.toLocaleString()}</b> tokens per day`;
 
   if (title == null && count == null) {
     title = titleText.textContent;
