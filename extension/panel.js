@@ -134,6 +134,9 @@ function createWeekData(value) {
 function updateTokenText(title, count) {
   let countText = document.getElementById("summary-text-count");
   let titleText = document.getElementById("summary-text-title");
+  let goalCountText = document.getElementById("summary-text-goal-count");
+
+  goalCountText.innerHTML = `<b>${GOAL.toLocaleString()}</b> tokens`;
 
   if (title == null && count == null) {
     title = titleText.textContent;
@@ -163,20 +166,24 @@ function updateMetrics(count) {
   const watermL = 0.32 * (count / 500);
   const elecWh = 0.34 * (count / 500);
 
-  const bottles = (800_000_000 * watermL) / 500;
+  const waterPeople = (800_000_000 * watermL) / (1300 * 365);
   const homes = (800_000_000 * elecWh) / (11_135 * 1000);
 
   let waterHeader = document.getElementById("water-count");
   let waterText = document.getElementById("water-text");
   waterHeader.textContent = `${watermL.toFixed(2)} mL`;
-  waterText.innerHTML = `If every user used this amount, that equates to using <b>${Math.round(bottles).toLocaleString()}</b>
-  bottles of fresh water every single day.`;
+  waterText.innerHTML =
+    `Collectively<b class="tiny-text">*</b>, that's enough drinking water to last ` +
+    `<b>${Math.round(waterPeople).toLocaleString()}</b> people for an entire year.` +
+    `<br><br><b class="tiny-text">*</b>across all ChatGPT users`;
 
   let elecHeader = document.getElementById("electricity-count");
   let elecText = document.getElementById("electricity-text");
   elecHeader.textContent = `${elecWh.toFixed(2)} Wh`;
-  elecText.innerHTML = `If every user used this amount, that equates to enough
-  energy to power <b>${Math.round(homes).toLocaleString()}</b> homes for an entire year.`;
+  elecText.innerHTML =
+    `Collectively<b class="tiny-text">*</b>, that's enough energy to power ` +
+    `<b>${Math.round(homes).toLocaleString()}</b> homes for an entire year.` +
+    `<br><br><b class="tiny-text">*</b>across all ChatGPT users`;
 }
 
 function updateDisplay() {

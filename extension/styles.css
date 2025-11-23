@@ -60,9 +60,13 @@
     overflow-y: auto;
     box-sizing: border-box;
     border-left: 1px solid rgba(127, 127, 127, 0.1);
-    z-index: 999999;
+    z-index: 1;
     padding-left: 2rem;
     padding-right: 2rem;
+
+    b {
+        font-weight: bold !important;
+    }
 }
 
 #badges {
@@ -184,11 +188,18 @@
     opacity: 1;
 }
 
+#summary-stats-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 .nav-btn:hover {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-#summary-token-count {
+.summary-token-count {
     flex: 0 0 auto; /* shrink to fit content, no stretching */
 }
 
@@ -226,8 +237,46 @@
 
 #electricity-text,
 #water-text,
+#summary-text-goal-count,
 #summary-text-count {
     b {
         font-weight: bold !important;
     }
+}
+
+.hover-box {
+    font-size: smaller;
+    padding-top: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.popup {
+    position: absolute;
+    top: 120%; /* below the element */
+    left: 100%;
+    transform: translateX(-25%);
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid rgba(127, 127, 127, 0.5);
+    color: black;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    width: 300px;
+    transition: opacity 0.15s ease;
+    z-index: 99999;
+
+    p {
+        white-space: normal;
+    }
+}
+
+.hover-box:hover .popup {
+    opacity: 1;
+}
+
+.tiny-text {
+    font-size: x-small;
 }

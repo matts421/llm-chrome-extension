@@ -11,9 +11,15 @@
     </head>
     <body>
         <h2 id="title">Your GPT Stats</h2>
-        <div id="summary-token-count">
-            <p id="summary-text-title"></p>
-            <p id="summary-text-count"></p>
+        <div id="summary-stats-horizontal">
+            <div class="summary-token-count">
+                <p id="summary-text-title"></p>
+                <p id="summary-text-count"></p>
+            </div>
+            <div class="summary-token-count">
+                <p>Goal limit</p>
+                <p id="summary-text-goal-count"></p>
+            </div>
             <p id="summary-text-diff" style="font-size: small"></p>
         </div>
         <div id="tokenBox">
@@ -24,13 +30,37 @@
             </div>
             <canvas id="tokenChart"></canvas>
         </div>
-        <div id="token-goal-input">
-            <input
-                type="number"
-                id="goal-input"
-                placeholder="Set daily token goal"
-            />
-            <button id="token-enter-button">Enter</button>
+        <div>
+            <div id="token-goal-input">
+                <input
+                    type="number"
+                    id="goal-input"
+                    placeholder="Set daily token goal limit"
+                />
+                <button id="token-enter-button">Enter</button>
+            </div>
+            <div class="hover-box">
+                What is a token? ⓘ
+                <div class="popup">
+                    <p>
+                        AI models like ChatGPT break down words into units of
+                        text called <b>tokens</b>. Therefore, we can think of
+                        tokens as the AI version of words.
+                        <br />
+                        <br />
+                        Longer or more complicated prompts use more tokens,
+                        since there are more words for ChatGPT to process. This
+                        results in the model having to “think” for longer about
+                        its response, in turn using more resources like water
+                        and electricity.
+                        <br />
+                        <br /><i
+                            >An average prompt to ChatGPT uses about 500
+                            tokens</i
+                        >
+                    </p>
+                </div>
+            </div>
         </div>
         <div id="badges">
             <div id="water-usage">
