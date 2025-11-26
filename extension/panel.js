@@ -281,6 +281,7 @@ function setGoal() {
 }
 goalButton.addEventListener("click", (_) => {
   setGoal();
+  goalInput.value = "";
 });
 
 /* ---------------- MESSAGE BRIDGE ---------------- */
