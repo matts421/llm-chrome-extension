@@ -70,11 +70,13 @@ async function injectPanel() {
   const panelId = "my-extension-panel";
   if (document.getElementById(panelId)) return;
 
-  document.documentElement.style.marginRight = "33%";
-  document.documentElement.style.transition = "margin-right 0.3s ease";
+  const thread = document.getElementById("thread");
+  if (!thread) return;
+  thread.style.width = "66.666%";
+  thread.style.marginRight = "33.333%";
+  thread.style.boxSizing = "border-box";
 
   const htmlText = await getFileText("panel.html");
-
   const panel = document.createElement("div");
   panel.id = panelId;
   panel.innerHTML = htmlText;
